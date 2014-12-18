@@ -1,5 +1,19 @@
-# This is a comment
-FROM ubuntu:14.04
+FROM dockerfile/java:oracle-java8
+
 MAINTAINER Diego Schmidt <dceschmidt@gmail.com>
-RUN apt-get update && apt-get install -y ruby ruby-dev
-RUN gem install sinatra
+
+RUN add-apt-repository ppa:git-core/ppa
+RUN apt-get update && apt-get install -y git maven
+
+# Clone project
+WORKDIR /code
+RUN git clone https://github.com/skavanagh/KeyBox.git
+WORKDIR /code/KeyBox
+RUN mvn package
+
+# Expose the http port
+expose 8443
+
+# run
+WORKDIR /code/KeyBox
+CMD mvn jetty:run
