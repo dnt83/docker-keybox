@@ -2,18 +2,15 @@ FROM dockerfile/java:oracle-java8
 
 MAINTAINER Diego Schmidt <dceschmidt@gmail.com>
 
-RUN add-apt-repository ppa:git-core/ppa
-RUN apt-get update && apt-get install -y git maven
-
-# Clone project
-WORKDIR /code
-RUN git clone https://github.com/skavanagh/KeyBox.git
-WORKDIR /code/KeyBox
-RUN mvn package
+# Download keybox
+WORKDIR /application
+ADD https://github.com/skavanagh/KeyBox/releases/download/v2.50.02/keybox-jetty-v2.50_02.tar.gz /application/ 
+RUN tar -zxf keybox-jetty-v2.50_02.tar.gz
+RUN rm keybox-jetty-v2.50_02.tar.gz
 
 # Expose the http port
 expose 8443
 
 # run
-WORKDIR /code/KeyBox
-CMD mvn jetty:run
+WORKDIR /application/KeyBox-jetty/jetty
+CMD java -jar start.jar
