@@ -11,6 +11,21 @@ Example:
 $ docker run -d -p 8443:8443 --name keybox dceschmidt/keybox
 ```
 
+**To run the LATEST Keybox version:**
+```sh
+$ docker run -d -e EDGE=1 -p <external_port>:8443 --name keybox dceschmidt/keybox
+
+Example:
+$ docker run -d -e EDGE=1 -p 8443:8443 --name keybox dceschmidt/keybox
+```
+
+Obs
+------
+If you are using MacOSX, you need to also foward the port from boot2docker (VirtualBox) to host computer.
+```sh
+$ VBoxManage controlvm boot2docker-vm natpf1 "keybox-port,tcp,127.0.0.1,8443,,8443"
+```
+
 Acknowledgments
 ------
 + [KeyBox](https://github.com/skavanagh/KeyBox) by [Sean Kavanagh](https://github.com/skavanagh)
