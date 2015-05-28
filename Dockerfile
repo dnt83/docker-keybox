@@ -29,10 +29,10 @@ RUN \
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 # Download keybox
-ADD https://github.com/skavanagh/KeyBox/releases/download/v2.60.00/keybox-jetty-v2.60_00.tar.gz /opt/
-RUN tar -zxf /opt/keybox-jetty-v2.60_00.tar.gz -C /opt
+ADD https://github.com/skavanagh/KeyBox/releases/download/v2.80.00/keybox-jetty-v2.80_00.tar.gz /opt/
+RUN tar -zxf /opt/keybox-jetty-v2.80_00.tar.gz -C /opt
 RUN mv /opt/KeyBox-jetty /opt/keybox
-RUN rm /opt/keybox-jetty-v2.60_00.tar.gz
+RUN rm /opt/keybox-jetty-v2.80_00.tar.gz
 
 # Expose the http port
 expose 8443
@@ -49,3 +49,4 @@ RUN chmod +x /etc/my_init.d/edge.sh
 RUN mkdir /etc/service/keybox
 ADD keybox.sh /etc/service/keybox/run
 RUN chmod +x /etc/service/keybox/run
+VOLUME /opt/keybox/jetty/keybox/WEB-INF/classes/keydb
