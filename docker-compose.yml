@@ -1,0 +1,9 @@
+version: '2'
+services:
+  keybox:
+    build: .
+    container_name: keybox
+    ports:
+        - 8443:8443
+#    environment:
+#        EDGE: 1

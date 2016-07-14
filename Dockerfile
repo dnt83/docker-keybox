@@ -1,44 +1,22 @@
-#
-# Oracle Java 8 Dockerfile from
-#
-# https://github.com/dockerfile/java
-# https://github.com/dockerfile/java/tree/master/oracle-java8
-#
 # Using https://github.com/phusion/baseimage-docker as a base image
-
 FROM phusion/baseimage:latest
 MAINTAINER Diego Schmidt <dceschmidt@gmail.com>
-ENV DEBIAN_FRONTEND noninteractive
-
-# Set correct environment variables.
-ENV HOME /root
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
 
-# Install Java.
-RUN \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
-
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+# Install Java 8.
+RUN apt-get update \
+    && apt-get install -y default-jdk
 
 # Download keybox
-ADD https://github.com/skavanagh/KeyBox/releases/download/v2.85.01/keybox-jetty-v2.85_01.tar.gz /opt/
-RUN tar -zxf /opt/keybox-jetty-v2.85_01.tar.gz -C /opt
+ADD https://github.com/skavanagh/KeyBox/releases/download/v2.85.03/keybox-jetty-v2.85_03.tar.gz /opt/
+RUN tar -zxf /opt/keybox-jetty-v2.85_03.tar.gz -C /opt
 RUN mv /opt/KeyBox-jetty /opt/keybox
-RUN rm /opt/keybox-jetty-v2.85_01.tar.gz
+RUN rm /opt/keybox-jetty-v2.85_03.tar.gz
 
 # Expose the http port
 expose 8443
-
-# Clean up APT when done.
-# RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Add edge.sh to execute during container startup
 RUN mkdir -p /etc/my_init.d
@@ -50,3 +28,6 @@ RUN mkdir /etc/service/keybox
 ADD keybox.sh /etc/service/keybox/run
 RUN chmod +x /etc/service/keybox/run
 VOLUME /opt/keybox/jetty/keybox/WEB-INF/classes/keydb
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
