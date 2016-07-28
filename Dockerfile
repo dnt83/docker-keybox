@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt-get install -y default-jdk
 
 # Download keybox
-ADD https://github.com/skavanagh/KeyBox/releases/download/v2.85.03/keybox-jetty-v2.85_03.tar.gz /opt/
+ADD https://github.com/skavanagh/KeyBox/releases/download/v2.86.00/keybox-jetty-v2.86_00.tar.gz /opt/
 RUN tar -zxf /opt/keybox-jetty-v2.85_03.tar.gz -C /opt
 RUN mv /opt/KeyBox-jetty /opt/keybox
 RUN rm /opt/keybox-jetty-v2.85_03.tar.gz
