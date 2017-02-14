@@ -1,33 +1,20 @@
 # Using https://github.com/phusion/baseimage-docker as a base image
-FROM phusion/baseimage:latest
+FROM openjdk:8-jdk-alpine
 MAINTAINER Diego Schmidt <dceschmidt@gmail.com>
 
-# Use baseimage-docker's init system
-CMD ["/sbin/my_init"]
+RUN mkdir -p /opt \
+    && apk add --no-cache wget curl \
+    && curl -s "https://api.github.com/repos/skavanagh/KeyBox/releases" \
+    | grep "browser_download_url" \
+    | head -n 1 \
+    | cut -d '"' -f 4 \
+    | xargs wget -qO- {} \
+    | tar -xzC /opt
 
-# Install Java 8.
-RUN apt-get update \
-    && apt-get install -y default-jdk
+EXPOSE 8443/tcp
+VOLUME /config
 
-# Download keybox
-ADD https://github.com/skavanagh/KeyBox/releases/download/v2.85.03/keybox-jetty-v2.85_03.tar.gz /opt/
-RUN tar -zxf /opt/keybox-jetty-v2.85_03.tar.gz -C /opt
-RUN mv /opt/KeyBox-jetty /opt/keybox
-RUN rm /opt/keybox-jetty-v2.85_03.tar.gz
+COPY start.sh /a/start.sh
+RUN chmod +x /a/start.sh
 
-# Expose the http port
-expose 8443
-
-# Add edge.sh to execute during container startup
-RUN mkdir -p /etc/my_init.d
-ADD edge.sh /etc/my_init.d/edge.sh
-RUN chmod +x /etc/my_init.d/edge.sh
-
-# Add Keybox to runit
-RUN mkdir /etc/service/keybox
-ADD keybox.sh /etc/service/keybox/run
-RUN chmod +x /etc/service/keybox/run
-VOLUME /opt/keybox/jetty/keybox/WEB-INF/classes/keydb
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ENTRYPOINT /a/start.sh

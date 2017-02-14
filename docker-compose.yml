@@ -3,7 +3,33 @@ services:
   keybox:
     build: .
     container_name: keybox
+    image: dceschmidt/keybox
     ports:
-        - 8443:8443
-#    environment:
-#        EDGE: 1
+        - "8443:8443"
+    volumes:
+      - ./datadir:/config
+    environment:
+      - resetApplicationSSHKey=
+      - sshKeyType=
+      - sshKeyLength=
+      - privateKey=
+      - publicKey=
+      - defaultSSHPassphrase=
+      - enableInternalAudit=
+      - deleteAuditLogAfter=
+      - serverAliveInterval=
+      - websocketTimeout=
+      - agentForwarding=
+      - oneTimePassword=
+      - keyManagementEnabled=
+      - forceUserKeyGeneration=
+      - authKeysRefreshInterval=
+      - passwordComplexityRegEx=
+      - passwordComplexityMsg=
+      - clientIPHeader=
+      - jaasModule=
+      - dbPath=
+      - maxActive=
+      - testOnBorrow=
+      - minIdle=
+      - maxWait=
