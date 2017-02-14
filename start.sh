@@ -21,7 +21,7 @@
 # echo clientIPHeader=${clientIPHeader:-} >> /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties
 # echo jaasModule=${jaasModule:-} >> /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties
 
-# echo dbPath=${dbPath:-} >> /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties
+# echo dbPath=${dbPath:-} >> /a/keydb/KeyBoxConfig.properties
 # echo maxActive=${maxActive:-25} >> /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties
 # echo testOnBorrow=${testOnBorrow:-true} >> /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties
 # echo minIdle=${minIdle:-2} >> /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties
@@ -29,8 +29,10 @@
 
 
 #link database directory
-#rm -rf /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/keydb
-#ln -sf /config /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/keydb
+# rm -rf /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/keydb
+# ln -sf /a/keydb /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/
+# cp -f /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties /a/keydb
+ln -sf /a/keydb/KeyBoxConfig.properties /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/KeyBoxConfig.properties
 
 
 #Start keybox

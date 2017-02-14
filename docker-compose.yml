@@ -7,7 +7,8 @@ services:
     ports:
         - "8443:8443"
     volumes:
-      - ./datadir:/config
+      - ./datadir:/a/keydb
+      - ./datadir/keydb:/opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/keydb
     environment:
       - resetApplicationSSHKey=
       - sshKeyType=
@@ -28,7 +29,6 @@ services:
       - passwordComplexityMsg=
       - clientIPHeader=
       - jaasModule=
-      - dbPath=
       - maxActive=
       - testOnBorrow=
       - minIdle=

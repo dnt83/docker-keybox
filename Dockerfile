@@ -1,4 +1,3 @@
-# Using https://github.com/phusion/baseimage-docker as a base image
 FROM openjdk:8-jdk-alpine
 MAINTAINER Diego Schmidt <dceschmidt@gmail.com>
 
@@ -12,9 +11,10 @@ RUN mkdir -p /opt \
     | tar -xzC /opt
 
 EXPOSE 8443/tcp
-VOLUME /config
+VOLUME ["/a/keydb"]
+VOLUME /opt/KeyBox-jetty/jetty/keybox/WEB-INF/classes/keydb
 
-COPY start.sh /a/start.sh
+ADD start.sh /a/start.sh
 RUN chmod +x /a/start.sh
 
-ENTRYPOINT /a/start.sh
+ENTRYPOINT  ["/a/start.sh"]
